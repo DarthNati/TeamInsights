@@ -9,86 +9,143 @@
         body {
             font-family: 'Inter', sans-serif;
             margin: 0;
-            padding: 20px;
-            background: #f4f6f9;
-            color: #333;
+            padding: 0;
+            background: #121212;
+            color: #f5f5f5;
             line-height: 1.6;
         }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 20px;
         }
+
         h1 {
             text-align: center;
-            color: #2c3e50;
+            color: #00aaff;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        #insights {
+            background: #1e1e1e;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .insight-section {
             margin-bottom: 30px;
         }
-        #insights {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .insight-section {
-            margin-bottom: 20px;
-        }
+
         .highlight {
-            background-color: #f0f4f8;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-        .warning {
-            color: #d94d4d;
+            padding: 15px;
+            border-radius: 10px;
+            color: #fff;
             font-weight: 600;
         }
+
+        .warning {
+            color: #ff6b6b;
+            font-weight: 700;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
+            background: #1e1e1e;
+            border-radius: 10px;
+            overflow: hidden;
         }
+
         th, td {
-            border: 1px solid #e2e8f0;
-            padding: 10px;
+            padding: 15px;
             text-align: left;
+            color: #eaeaea;
         }
+
+        .tier-2-il {
+    background-color: #2e86de; /* Blue for Tier 2 IL */
+}
+
+.tier-2-dubai {
+    background-color: #e74c3c; /* Red for Tier 2 DUBAI */
+}
+
         th {
-            background-color: #f1f5f9;
-            font-weight: 600;
+            background: #282828;
+            font-weight: 700;
         }
+
+        tr:nth-child(odd) {
+            background: #242424;
+        }
+
         .collapsible {
-            background-color: #f1f5f9;
-            color: #333;
+            background: #282828;
+            color: #f5f5f5;
             cursor: pointer;
-            padding: 10px;
+            padding: 15px;
             width: 100%;
             border: none;
             text-align: left;
-            font-size: 16px;
+            font-size: 18px;
+            border-radius: 10px;
+            transition: background 0.3s ease;
         }
+
+        .collapsible:hover {
+            background: #333333;
+        }
+
         .collapsible:after {
             content: '\002B'; /* Plus sign */
-            font-size: 18px;
-            color: #777;
+            font-size: 20px;
+            color: #ff0015;
             float: right;
         }
+
         .active:after {
             content: '\2212'; /* Minus sign */
         }
+
         .content {
-            padding: 0;
+            padding: 15px;
             display: none;
             overflow: hidden;
-            background-color: #f9f9f9;
+            background: #1e1e1e;
             margin-top: 10px;
+            border-radius: 10px;
         }
-        .content table {
-            margin-bottom: 0;
-        }
-        select {
-            padding: 5px 10px;
+
+        select, button {
+            padding: 10px 15px;
             margin: 10px 0;
+            font-size: 16px;
+            color: #fff;
+            background: #00aaff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        select:hover, button:hover {
+            background: #0077cc;
+        }
+
+        input[type="checkbox"] {
+            margin-left: 10px;
+            transform: scale(1.2);
+        }
+
+        iframe {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
@@ -271,7 +328,6 @@
             const summaryElement = document.getElementById('vacation-summary');
             summaryElement.innerHTML = `
                 <h2>Vacation Summary</h2>
-                <p>Total Vacations (ALL): ${events.length}</p>
                 <p class="warning">Total Days (FILTER): ${filteredVacations.length}</p>
             `;
 
@@ -312,5 +368,6 @@
         // Run insights on page load
         updateInsights();
     </script>
+
 </body>
 </html>
