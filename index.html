@@ -84,6 +84,11 @@
                 background: #242424;
             }
 
+            td:first-child {
+    white-space: nowrap; /* Prevents wrapping */
+    text-align: center; /* Centers the text */
+}
+
             .collapsible {
                 background: #282828;
                 color: #f5f5f5;
@@ -236,87 +241,97 @@
 
             // Parse ICS data into structured events
             const parseICSData = (icsData) => {
-                const events = [];
-                const eventPattern = /BEGIN:VEVENT([\s\S]+?)END:VEVENT/g;
-                let match;
-                while ((match = eventPattern.exec(icsData)) !== null) {
-                    const event = match[1];
-                    const summaryMatch = /SUMMARY:(.+?)(?:\r?\n|$)/.exec(event);
-                    const dtStartMatch = /DTSTART;VALUE=DATE:(\d{8})/.exec(event);
-                    const dtEndMatch = /DTEND;VALUE=DATE:(\d{8})/.exec(event);
+    const events = [];
+    const eventPattern = /BEGIN:VEVENT([\s\S]+?)END:VEVENT/g;
+    let match;
+    while ((match = eventPattern.exec(icsData)) !== null) {
+        const event = match[1];
+        const summaryMatch = /SUMMARY:(.+?)(?:\r?\n|$)/.exec(event);
+        const dtStartMatch = /DTSTART;VALUE=DATE:(\d{8})/.exec(event);
+        const dtEndMatch = /DTEND;VALUE=DATE:(\d{8})/.exec(event);
 
-                    if (summaryMatch && dtStartMatch && dtEndMatch) {
-                        const summary = summaryMatch[1].trim();
-                        const holidayMatch = /^(.+?) -/.exec(summary);
-                        const teamMember = Object.keys(TEAM_MEMBERS).find(name => 
-                            summary.toLowerCase().includes(name.toLowerCase())
-                        );
+        if (summaryMatch && dtStartMatch && dtEndMatch) {
+            const summary = summaryMatch[1].trim();
+            const holidayMatch = /^(.+?) -/.exec(summary);
+            const teamMember = Object.keys(TEAM_MEMBERS).find(name => 
+                summary.toLowerCase().includes(name.toLowerCase())
+            );
 
-                        const holiday = holidayMatch && !summary.includes('Sick Day') && !summary.includes('Vacation') 
-                            ? holidayMatch[1] 
-                            : '';
+            const holiday = holidayMatch && !summary.includes('Sick Day') && !summary.includes('Vacation') 
+                ? holidayMatch[1] 
+                : '';
 
-                        if (teamMember) {
-                            events.push({
-                                summary: teamMember,
-                                group: TEAM_MEMBERS[teamMember],
-                                start: dtStartMatch[1],
-                                end: dtEndMatch[1],
-                                holiday: holiday
-                            });
-                        }
-                    }
-                }
-                return events;
-            };
+            if (teamMember) {
+                events.push({
+                    summary: teamMember,
+                    group: TEAM_MEMBERS[teamMember],
+                    start: dtStartMatch[1],
+                    end: dtEndMatch[1],
+                    holiday: holiday
+                });
+            }
+        }
+    }
+    return events;
+};
 
             // Group vacations by date and count
             const groupVacationsByDate = (events) => {
-                const vacationsByDate = {};
-                events.forEach(event => {
-                    const startDate = event.start;
-                    if (!vacationsByDate[startDate]) {
-                        vacationsByDate[startDate] = {
-                            members: [],
-                            groups: new Set(),
-                            holidays: new Set()
-                        };
-                    }
-
-                    vacationsByDate[startDate].members.push(event.summary);
-                    vacationsByDate[startDate].groups.add(event.group);
-                    if (event.holiday) {
-                        vacationsByDate[startDate].holidays.add(event.holiday);
-                    }
-                });
-                return vacationsByDate;
+    const vacationsByDate = {};
+    events.forEach(event => {
+        const dateRange = `${event.start}-${event.end}`;
+        if (!vacationsByDate[dateRange]) {
+            vacationsByDate[dateRange] = {
+                start: event.start,
+                end: event.end,
+                members: [],
+                groups: new Set(),
+                holidays: new Set()
             };
+        }
+
+        vacationsByDate[dateRange].members.push(event.summary);
+        vacationsByDate[dateRange].groups.add(event.group);
+        if (event.holiday) {
+            vacationsByDate[dateRange].holidays.add(event.holiday);
+        }
+    });
+    return vacationsByDate;
+};
 
             // Format date from YYYYMMDD to a more readable format
             const formatDate = (dateString) => {
-                const year = dateString.slice(0, 4);
-                const month = dateString.slice(4, 6);
-                const day = dateString.slice(6, 8);
-                return `${day}/${month}/${year}`;
-            };
+    const year = dateString.slice(0, 4);
+    const month = dateString.slice(4, 6);
+    const day = dateString.slice(6, 8);
+    return `${year}-${day}-${month}`;
+};
 
             // Filter vacations based on the number of unavailable members, past dates visibility, group, and date range
             const filterVacations = (vacationsByDate, showPastDates, minUnavailableMembers, selectedGroup, fromDate, toDate) => {
-                const today = new Date().toISOString().split('T')[0].replace(/-/g, '');
-                return Object.entries(vacationsByDate)
-                    .filter(([date, membersData]) => {
-                        const memberCount = membersData.members.length;
-                        const isGroupMatched = selectedGroup === 'all' || membersData.groups.has(selectedGroup);
-                        const isWithinDateRange = (!fromDate || date >= fromDate) && (!toDate || date <= toDate);
-                        return (showPastDates || date >= today) && memberCount >= minUnavailableMembers && isGroupMatched && isWithinDateRange;
-                    })
-                    .map(([date, membersData]) => ({
-                        date,
-                        members: membersData.members,
-                        groups: [...membersData.groups],
-                        holidays: [...membersData.holidays]
-                    }));
-            };
+    const today = new Date().toISOString().split('T')[0].replace(/-/g, '');
+    return Object.values(vacationsByDate)
+        .filter(dateRange => {
+            const memberCount = dateRange.members.length;
+            const isGroupMatched = selectedGroup === 'all' || dateRange.groups.has(selectedGroup);
+            const isWithinDateRange = 
+                (!fromDate || dateRange.end >= fromDate) && 
+                (!toDate || dateRange.start <= toDate);
+            const isNotPast = showPastDates || dateRange.end >= today;
+
+            return memberCount >= minUnavailableMembers && 
+                   isGroupMatched && 
+                   isWithinDateRange && 
+                   isNotPast;
+        })
+        .map(dateRange => ({
+            start: dateRange.start,
+            end: dateRange.end,
+            members: dateRange.members,
+            groups: [...dateRange.groups],
+            holidays: [...dateRange.holidays]
+        }));
+};
 
             // Update insights on the page
             const updateInsights = async () => {
@@ -344,13 +359,13 @@
                 // Populate vacations table
                 const vacationsBody = document.getElementById('vacations-body');
                 vacationsBody.innerHTML = filteredVacations.map(vacation => `
-                    <tr class="highlight">
-                        <td>${formatDate(vacation.date)}</td>
-                        <td>${[...new Set(vacation.members)].join(', ')}</td>
-                        <td>${[...new Set(vacation.groups)].join(', ')}</td>
-                        <td>${vacation.holidays.join(', ')}</td>
-                    </tr>
-                `).join('');
+    <tr class="highlight">
+        <td>${formatDate(vacation.start)} - ${formatDate(vacation.end)}</td>
+        <td>${[...new Set(vacation.members)].join(', ')}</td>
+        <td>${[...new Set(vacation.groups)].join(', ')}</td>
+        <td>${vacation.holidays.join(', ')}</td>
+    </tr>
+`).join('');
 
                 // Hide loading message
                 document.getElementById('loading-message').style.display = 'none';
