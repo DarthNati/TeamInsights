@@ -156,9 +156,18 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         }
 
-        .red-text {
-            color: red;
+        .IL-text {
+            color: rgb(219, 100, 255);
         }
+
+            .DUBAI-text {
+        color: rgb(255, 188, 4);
+    }
+
+    .red-text {
+        color: rgb(255, 0, 0);
+    }
+
     </style>
 </head>
 <body>
@@ -331,45 +340,50 @@
 };
 
 
-        const updateInsights = async () => {
-            const icsData = await fetchICSData();
-            const events = parseICSData(icsData);
-            const vacationsByDate = groupVacationsByDate(events);
+const updateInsights = async () => {
+    const icsData = await fetchICSData();
+    const events = parseICSData(icsData);
+    const vacationsByDate = groupVacationsByDate(events);
 
-            const showPastDates = document.getElementById('showPastDates').checked;
-            const minUnavailableMembers = parseInt(document.getElementById('minUnavailableMembers').value);
-            const selectedGroup = document.getElementById('groupFilter').value;
-            const fromDate = document.getElementById('fromDate').value.replace(/-/g, '');
-            const toDate = document.getElementById('toDate').value.replace(/-/g, '');
+    const showPastDates = document.getElementById('showPastDates').checked;
+    const minUnavailableMembers = parseInt(document.getElementById('minUnavailableMembers').value);
+    const selectedGroup = document.getElementById('groupFilter').value;
+    const fromDate = document.getElementById('fromDate').value.replace(/-/g, '');
+    const toDate = document.getElementById('toDate').value.replace(/-/g, '');
 
-            const filteredVacations = filterVacations(vacationsByDate, showPastDates, minUnavailableMembers, selectedGroup, fromDate, toDate);
+    const filteredVacations = filterVacations(vacationsByDate, showPastDates, minUnavailableMembers, selectedGroup, fromDate, toDate);
 
-            const summaryElement = document.getElementById('vacation-summary');
-            summaryElement.innerHTML = `
-                <h2>Vacation Summary</h2>
-                <p class="warning">Total Days (FILTER): ${filteredVacations.length}</p>
-            `;
+    const summaryElement = document.getElementById('vacation-summary');
+    summaryElement.innerHTML = `
+        <h2>Vacation Summary</h2>
+        <p class="warning">Total Days (FILTER): ${filteredVacations.length}</p>
+    `;
 
-            const vacationsBody = document.getElementById('vacations-body');
-            vacationsBody.innerHTML = filteredVacations.map(vacation => {
-                const vacationCount = vacation.members.length;
-                const totalMembers = Object.keys(TEAM_MEMBERS).length;
-                const percentage = (vacationCount / totalMembers) * 100;
-                const percentageClass = percentage > 20 ? 'red-text' : '';
+    const vacationsBody = document.getElementById('vacations-body');
+    vacationsBody.innerHTML = filteredVacations.map(vacation => {
+        const vacationCount = vacation.members.length;
+        const totalMembers = Object.keys(TEAM_MEMBERS).length;
+        const percentage = (vacationCount / totalMembers) * 100;
+        const percentageClass = percentage > 20 ? 'red-text' : '';
 
-                return `
-                    <tr class="highlight">
-                        <td>${formatDate(vacation.start)} - ${formatDate(vacation.end)}</td>
-                        <td>${[...new Set(vacation.members)].join(', ')}</td>
-                        <td>${[...new Set(vacation.groups)].join(', ')}</td>
-                        <td>${vacation.holidays.join(', ')}</td>
-                        <td class="${percentageClass}">${percentage.toFixed(2)}%</td> <!-- Added Percentage Column -->
-                    </tr>
-                `;
-            }).join('');
+        // Apply conditional styling for Group text color
+        const groupClass = vacation.groups.includes("Tier 2 IL") ? "IL-text" : 
+                           vacation.groups.includes("Tier 2 DUBAI") ? "DUBAI-text" : "";
 
-            document.getElementById('loading-message').style.display = 'none';
-        };
+        return `
+            <tr class="highlight">
+                <td>${formatDate(vacation.start)} - ${formatDate(vacation.end)}</td>
+                <td>${[...new Set(vacation.members)].join(', ')}</td>
+                <td class="${groupClass}">${[...new Set(vacation.groups)].join(', ')}</td>
+                <td>${vacation.holidays.join(', ')}</td>
+                <td class="${percentageClass}">${percentage.toFixed(2)}%</td> <!-- Added Percentage Column -->
+            </tr>
+        `;
+    }).join('');
+
+    document.getElementById('loading-message').style.display = 'none';
+};
+
 
         const collapsibles = document.getElementsByClassName("collapsible");
         for (let i = 0; i < collapsibles.length; i++) {
