@@ -195,7 +195,7 @@
                 <input type="date" id="fromDate">
                 <label for="toDate">To:</label>
                 <input type="date" id="toDate">
-                <button class="collapsible">Unavailable Agents List</button>
+                <button class="collapsible">Vacations with Unavailable Members</button>
                 <div class="content" id="vacations-body-wrapper">
                     <table id="vacations-table">
                         <thead>
@@ -305,30 +305,31 @@
         };
 
         const filterVacations = (vacationsByDate, showPastDates, minUnavailableMembers, selectedGroup, fromDate, toDate) => {
-            const today = new Date().toISOString().split('T')[0].replace(/-/g, '');
-            return Object.values(vacationsByDate)
-                .filter(dateRange => {
-                    const memberCount = dateRange.members.length;
-                    const isGroupMatched = selectedGroup === 'all' || dateRange.groups.has(selectedGroup);
-                    const isWithinDateRange = 
-                        (!fromDate || dateRange.end >= fromDate) && 
-                        (!toDate || dateRange.start <= toDate);
-                    const isNotPast = showPastDates || dateRange.end >= today;
+    const today = new Date().toISOString().split('T')[0].replace(/-/g, '');
+    return Object.values(vacationsByDate)
+        .filter(dateRange => {
+            const memberCount = new Set(dateRange.members).size;  // Ensure unique member count
+            const isGroupMatched = selectedGroup === 'all' || dateRange.groups.has(selectedGroup);
+            const isWithinDateRange = 
+                (!fromDate || dateRange.end >= fromDate) && 
+                (!toDate || dateRange.start <= toDate);
+            const isNotPast = showPastDates || dateRange.end >= today;
 
-                    return memberCount >= minUnavailableMembers && 
-                        isGroupMatched && 
-                        isWithinDateRange && 
-                        isNotPast;
-                })
-                .map(dateRange => ({
-                    start: dateRange.start,
-                    end: dateRange.end,
-                    members: dateRange.members,
-                    groups: [...dateRange.groups],
-                    holidays: [...dateRange.holidays]
-                }))
-                .sort((a, b) => a.start.localeCompare(b.start)); // Sorting by start date
-        };
+            return memberCount >= minUnavailableMembers && 
+                isGroupMatched && 
+                isWithinDateRange && 
+                isNotPast;
+        })
+        .map(dateRange => ({
+            start: dateRange.start,
+            end: dateRange.end,
+            members: dateRange.members,
+            groups: [...dateRange.groups],
+            holidays: [...dateRange.holidays]
+        }))
+        .sort((a, b) => a.start.localeCompare(b.start)); // Sorting by start date
+};
+
 
         const updateInsights = async () => {
             const icsData = await fetchICSData();
