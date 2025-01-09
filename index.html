@@ -233,7 +233,8 @@
             'Hodaya Menahem': 'Tier 2 IL',
             'Netanel Balas': 'Tier 2 IL',
             'Abizar Fakruddin': 'Tier 2 DUBAI',
-            'Yasin Banu Shafi Mohamed': 'Tier 2 DUBAI'
+            'Yasin Banu Shafi Mohamed': 'Tier 2 DUBAI',
+            'Peeyush Sharma': 'Tier 2 DUBAI'
         };
 
         const fetchICSData = async () => {
@@ -341,47 +342,64 @@
 
 
 const updateInsights = async () => {
-    const icsData = await fetchICSData();
-    const events = parseICSData(icsData);
-    const vacationsByDate = groupVacationsByDate(events);
+    try {
+        const loadingMessage = document.getElementById('loading-message');
+        if (loadingMessage) {
+            loadingMessage.textContent = 'Loading vacation data...';
+        }
 
-    const showPastDates = document.getElementById('showPastDates').checked;
-    const minUnavailableMembers = parseInt(document.getElementById('minUnavailableMembers').value);
-    const selectedGroup = document.getElementById('groupFilter').value;
-    const fromDate = document.getElementById('fromDate').value.replace(/-/g, '');
-    const toDate = document.getElementById('toDate').value.replace(/-/g, '');
+        const icsData = await fetchICSData();
+        const events = parseICSData(icsData);
+        const vacationsByDate = groupVacationsByDate(events);
 
-    const filteredVacations = filterVacations(vacationsByDate, showPastDates, minUnavailableMembers, selectedGroup, fromDate, toDate);
+        const showPastDates = document.getElementById('showPastDates')?.checked || false;
+        const minUnavailableMembers = parseInt(document.getElementById('minUnavailableMembers')?.value || '1');
+        const selectedGroup = document.getElementById('groupFilter')?.value || 'all';
+        const fromDate = document.getElementById('fromDate')?.value.replace(/-/g, '') || '';
+        const toDate = document.getElementById('toDate')?.value.replace(/-/g, '') || '';
 
-    const summaryElement = document.getElementById('vacation-summary');
-    summaryElement.innerHTML = `
-        <h2>Vacation Summary</h2>
-        <p class="warning">Total Days (FILTER): ${filteredVacations.length}</p>
-    `;
+        const filteredVacations = filterVacations(vacationsByDate, showPastDates, minUnavailableMembers, selectedGroup, fromDate, toDate);
 
-    const vacationsBody = document.getElementById('vacations-body');
-    vacationsBody.innerHTML = filteredVacations.map(vacation => {
-        const vacationCount = vacation.members.length;
-        const totalMembers = Object.keys(TEAM_MEMBERS).length;
-        const percentage = (vacationCount / totalMembers) * 100;
-        const percentageClass = percentage > 20 ? 'red-text' : '';
+        const summaryElement = document.getElementById('vacation-summary');
+        if (summaryElement) {
+            summaryElement.innerHTML = `
+                <h2>Vacation Summary</h2>
+                <p class="warning">Total Days (FILTER): ${filteredVacations.length}</p>
+            `;
+        }
 
-        // Apply conditional styling for Group text color
-        const groupClass = vacation.groups.includes("Tier 2 IL") ? "IL-text" : 
-                           vacation.groups.includes("Tier 2 DUBAI") ? "DUBAI-text" : "";
+        const vacationsBody = document.getElementById('vacations-body');
+        if (vacationsBody) {
+            vacationsBody.innerHTML = filteredVacations.map(vacation => {
+                const vacationCount = vacation.members.length;
+                const totalMembers = Object.keys(TEAM_MEMBERS).length;
+                const percentage = (vacationCount / totalMembers) * 100;
+                const percentageClass = percentage > 20 ? 'red-text' : '';
+                const groupClass = vacation.groups.includes("Tier 2 IL") ? "IL-text" : 
+                                 vacation.groups.includes("Tier 2 DUBAI") ? "DUBAI-text" : "";
 
-        return `
-            <tr class="highlight">
-                <td>${formatDate(vacation.start)} - ${formatDate(vacation.end)}</td>
-                <td>${[...new Set(vacation.members)].join(', ')}</td>
-                <td class="${groupClass}">${[...new Set(vacation.groups)].join(', ')}</td>
-                <td>${vacation.holidays.join(', ')}</td>
-                <td class="${percentageClass}">${percentage.toFixed(2)}%</td> <!-- Added Percentage Column -->
-            </tr>
-        `;
-    }).join('');
+                return `
+                    <tr class="highlight">
+                        <td>${formatDate(vacation.start)} - ${formatDate(vacation.end)}</td>
+                        <td>${[...new Set(vacation.members)].join(', ')}</td>
+                        <td class="${groupClass}">${[...new Set(vacation.groups)].join(', ')}</td>
+                        <td>${vacation.holidays.join(', ')}</td>
+                        <td class="${percentageClass}">${percentage.toFixed(2)}%</td>
+                    </tr>
+                `;
+            }).join('');
+        }
 
-    document.getElementById('loading-message').style.display = 'none';
+        if (loadingMessage) {
+            loadingMessage.style.display = 'none';
+        }
+    } catch (error) {
+        console.error('Error updating insights:', error);
+        const loadingMessage = document.getElementById('loading-message');
+        if (loadingMessage) {
+            loadingMessage.textContent = 'Error loading vacation data.';
+        }
+    }
 };
 
 
