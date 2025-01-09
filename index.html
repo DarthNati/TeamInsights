@@ -3,221 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <center>
-    <img src="https://cdn.prod.website-files.com/66cdf84d5ef945a2f765fc6b/66faf0c17f65b33717c77809_636162392c7713af03370c10_635ec0acf95dcc87b033ad87_rapyd.png">
-</center>
     <title>Global Support - Staff Manager</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --background: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --warning: #ef4444;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
-            background: #121212;
-            color: #f5f5f5;
+            background: var(--background);
+            color: var(--text);
             line-height: 1.6;
         }
 
         .container {
             max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            max-width: 200px;
+            margin-bottom: 1rem;
         }
 
         h1 {
-            text-align: center;
-            color: #00aaff;
-            margin-bottom: 30px;
-            font-weight: 700;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 1.875rem;
+            margin: 0;
         }
 
         #insights {
-            background: #1e1e1e;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-            padding: 30px;
-            margin-bottom: 20px;
+            background: var(--card-bg);
+            border-radius: 1rem;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
         }
 
         .insight-section {
-            margin-bottom: 30px;
+            margin-bottom: 2rem;
         }
 
-        .highlight {
-            padding: 15px;
-            border-radius: 10px;
-            color: #fff;
-            font-weight: 600;
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
 
-        .warning {
-            color: #ff6b6b;
-            font-weight: 700;
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        select, input[type="date"] {
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text);
+            background: var(--card-bg);
+            transition: border-color 0.15s ease;
+        }
+
+        select:hover, input[type="date"]:hover {
+            border-color: var(--primary-light);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 0.25rem;
+        }
+
+        .collapsible {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            transition: background-color 0.15s ease;
+        }
+
+        .collapsible:hover {
+            background: var(--primary-light);
+        }
+
+        .collapsible:after {
+            content: '+';
+            float: right;
+            font-weight: bold;
+        }
+
+        .active:after {
+            content: '−';
+        }
+
+        .content {
+            display: none;
+            margin-top: 1rem;
         }
 
         table {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            background: #1e1e1e;
-            border-radius: 10px;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 1rem;
+            background: var(--card-bg);
+            border-radius: 0.5rem;
             overflow: hidden;
         }
 
         th, td {
-            padding: 15px;
+            padding: 1rem;
             text-align: left;
-            color: #eaeaea;
-        }
-
-        .tier-2-il {
-            background-color: #2e86de; /* Blue for Tier 2 IL */
-        }
-
-        .tier-2-dubai {
-            background-color: #e74c3c; /* Red for Tier 2 DUBAI */
+            border-bottom: 1px solid var(--border);
         }
 
         th {
-            background: #282828;
-            font-weight: 700;
+            background: var(--background);
+            font-weight: 600;
+            color: var(--text-light);
+            font-size: 0.875rem;
+            text-transform: uppercase;
         }
 
-        tr:nth-child(odd) {
-            background: #242424;
-        }
-
-        td:first-child {
-            white-space: nowrap; /* Prevents wrapping */
-            text-align: center; /* Centers the text */
-        }
-
-        .collapsible {
-            background: #282828;
-            color: #f5f5f5;
-            cursor: pointer;
-            padding: 15px;
-            width: 100%;
-            border: none;
-            text-align: left;
-            font-size: 18px;
-            border-radius: 10px;
-            transition: background 0.3s ease;
-        }
-
-        .collapsible:hover {
-            background: #333333;
-        }
-
-        .collapsible:after {
-            content: '\002B'; /* Plus sign */
-            font-size: 20px;
-            color: #ff0015;
-            float: right;
-        }
-
-        .active:after {
-            content: '\2212'; /* Minus sign */
-        }
-
-        .content {
-            padding: 15px;
-            display: none;
-            overflow: hidden;
-            background: #1e1e1e;
-            margin-top: 10px;
-            border-radius: 10px;
-        }
-
-        select, button {
-            padding: 10px 15px;
-            margin: 10px 0;
-            font-size: 16px;
-            color: #fff;
-            background: #00aaff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        select:hover, button:hover {
-            background: #0077cc;
-        }
-
-        input[type="checkbox"] {
-            margin-left: 10px;
-            transform: scale(1.2);
-        }
-
-        iframe {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        tr:last-child td {
+            border-bottom: none;
         }
 
         .IL-text {
-            color: rgb(219, 100, 255);
+            color: #8b5cf6;
+            font-weight: 500;
         }
 
-            .DUBAI-text {
-        color: rgb(255, 188, 4);
-    }
+        .DUBAI-text {
+            color: #f59e0b;
+            font-weight: 500;
+        }
 
-    .red-text {
-        color: rgb(255, 0, 0);
-    }
+        .red-text {
+            color: var(--warning);
+            font-weight: 500;
+        }
 
+        .warning {
+            color: var(--warning);
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            th, td {
+                padding: 0.75rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Team Vacation Insights</h1>
+        <div class="header">
+            <img src="https://cdn.prod.website-files.com/66cdf84d5ef945a2f765fc6b/66faf0c17f65b33717c77809_636162392c7713af03370c10_635ec0acf95dcc87b033ad87_rapyd.png" alt="Logo" class="logo">
+            <h1>Team Vacation Insights</h1>
+        </div>
+        
         <div id="insights">
             <div id="vacation-summary" class="insight-section">
                 <h2>Vacation Summary</h2>
                 <p id="loading-message">Loading vacation data...</p>
             </div>
+            
             <div id="team-vacations" class="insight-section">
-                <label for="minUnavailableMembers">Select minimum number of unavailable members:</label>
-                <select id="minUnavailableMembers">
-                    <option value="1">1 member</option>
-                    <option value="2">2 members</option>
-                    <option value="3">3 members</option>
-                    <option value="4">4 members</option>
-                    <option value="5">5 members</option>
-                    <option value="6">6 members</option>
-                    <option value="7">7 members</option>
-                </select>
-
-                <label for="groupFilter">Select Group:</label>
-                <select id="groupFilter">
-                    <option value="all">All Groups</option>
-                    <option value="Tier 2 IL">Tier 2 IL</option>
-                    <option value="Tier 2 DUBAI">Tier 2 DUBAI</option>
-                </select>
-                <br>
-                <label for="showPastDates">Show Past Dates</label>
-                <input type="checkbox" id="showPastDates">
-                <br>
-                <label for="fromDate">From:</label>
-                <input type="date" id="fromDate">
-                <label for="toDate">To:</label>
-                <input type="date" id="toDate">
-                <button class="collapsible">Vacations with Unavailable Members</button>
+                <div class="controls-grid">
+                    <div class="control-group">
+                        <label for="minUnavailableMembers">Minimum Unavailable Members</label>
+                        <select id="minUnavailableMembers">
+                            <option value="1">1 member</option>
+                            <option value="2">2 members</option>
+                            <option value="3">3 members</option>
+                            <option value="4">4 members</option>
+                            <option value="5">5 members</option>
+                            <option value="6">6 members</option>
+                            <option value="7">7 members</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="groupFilter">Group Filter</label>
+                        <select id="groupFilter">
+                            <option value="all">All Groups</option>
+                            <option value="Tier 2 IL">Tier 2 IL</option>
+                            <option value="Tier 2 DUBAI">Tier 2 DUBAI</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="fromDate">From Date</label>
+                        <input type="date" id="fromDate">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="toDate">To Date</label>
+                        <input type="date" id="toDate">
+                    </div>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="showPastDates">
+                    <label for="showPastDates">Show Past Dates</label>
+                </div>
+                
+                <button class="collapsible">View Vacation Schedule</button>
                 <div class="content" id="vacations-body-wrapper">
                     <table id="vacations-table">
                         <thead>
                             <tr>
                                 <th>Date</th>
-                                <th>Vacationing Team Members</th>
+                                <th>Team Members</th>
                                 <th>Group</th>
                                 <th>Holiday</th>
-                                <th>Percentage</th> <!-- New column -->
+                                <th>Percentage</th>
                             </tr>
                         </thead>
                         <tbody id="vacations-body">
-                            <!-- Vacation data will be inserted here -->
                         </tbody>
                     </table>
                 </div>
