@@ -7,28 +7,15 @@ document.addEventListener('DOMContentLoaded', async function () {
     containerDiv.appendChild(calendarEl);
 
     // Team members configuration
-    const COLORS = {
-        GOLD: '#fc8626',
-        SKY_BLUE: '#004f9f',
-        DARK_RED: '#66023c'
-    };
-    
-    // Team members configuration
     const TEAM_MEMBERS = {
-        // Tier 2 IL
-        'Netanel Balas': { group: 'Tier 2 IL', color: COLORS.GOLD }, 
-        'Nadav Arnheim': { group: 'Tier 2 IL', color: COLORS.GOLD },
-        'Guy Kogan': { group: 'Tier 2 IL', color: COLORS.GOLD }, 
-        'Galit Bezinian Ezov': { group: 'Tier 2 IL', color: COLORS.GOLD },
-        // Tier 2 Dubai
-        'Abizar Fakruddin': { group: 'Tier 2 DUBAI', color: COLORS.SKY_BLUE },
-        'Yasin Banu Shafi Mohamed': { group: 'Tier 2 DUBAI', color: COLORS.SKY_BLUE },
-        'Peeyush Sharma': { group: 'Tier 2 DUBAI', color: COLORS.SKY_BLUE },
-        // Support EU
-        'Erla Gudmundsdottir': { group: 'Support Europe', color: COLORS.DARK_RED },
-        'Asdis Johannsdottir': { group: 'Support Europe', color: COLORS.DARK_RED },
-        'Stefan Orn Thorarinsson': { group: 'Support Europe', color: COLORS.DARK_RED },
-        'María Ýr Valsdóttir': { group: 'Support Europe', color: COLORS.DARK_RED }
+        'Netanel Balas': { group: 'Tier 2 IL', color: '#FFD700' }, 
+        'Nadav Arnheim': { group: 'Tier 2 IL', color: '#FFD700' },
+        'Guy Kogan': { group: 'Tier 2 IL', color: '#FFD700' }, 
+        'Galit Bezinian Ezov': { group: 'Tier 2 IL', color: '#FFD700' },
+        'Abizar Fakruddin': { group: 'Tier 2 DUBAI', color: '#87CEEB' },
+        'Yasin Banu Shafi Mohamed': { group: 'Tier 2 DUBAI', color: '#87CEEB' },
+        'Peeyush Sharma': { group: 'Tier 2 DUBAI', color: '#87CEEB' },
+        'Erla Gudmundsdottir': { group: 'Support Europe', color: '#66023c' }
     };
 
     // Create and inject CSS styles
@@ -211,6 +198,70 @@ document.addEventListener('DOMContentLoaded', async function () {
         background: rgba(255, 255, 255, 0.2);
     }
 
+    .vacation-stats {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .vacation-stats h3 {
+        margin: 0 0 10px 0;
+        font-size: 1.1em;
+        color: #fff;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 8px;
+    }
+
+    .vacation-stats-content {
+        font-size: 0.9em;
+    }
+
+    .vacation-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 8px;
+        padding: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 4px;
+    }
+
+    .vacation-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .vacation-name {
+        font-weight: 500;
+        margin-bottom: 3px;
+    }
+
+    .vacation-dates {
+        font-size: 0.85em;
+        opacity: 0.8;
+    }
+
+    .vacation-type {
+        font-size: 0.85em;
+        padding: 2px 6px;
+        border-radius: 3px;
+        margin-left: auto;
+    }
+
+    .vacation-type.holiday {
+        background: #4CAF50;
+        color: white;
+    }
+
+    .vacation-type.vacation {
+        background: #2196F3;
+        color: white;
+    }
+
+    .vacation-type.sick {
+        background: #F44336;
+        color: white;
+    }
+
     /* Modern Calendar Button Styles */
     .fc-button-primary {
         background-color: #2D3338 !important;
@@ -276,7 +327,15 @@ document.addEventListener('DOMContentLoaded', async function () {
         const filterContainer = document.createElement('div');
         filterContainer.className = 'filter-sidebar';
 
-        let filterHTML = '<h2>Team Filters</h2>';
+        let filterHTML = `
+            <h2>Team Filters</h2>
+            <div class="vacation-stats">
+                <h3>Vacation This Month</h3>
+                <div id="vacation-stats-content" class="vacation-stats-content">
+                    Loading...
+                </div>
+            </div>
+        `;
 
         // Group members by team
         const groupedMembers = {};
@@ -390,6 +449,73 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
         filterEvents();
     };
+
+    // Function to update vacation stats based on current month
+    function updateVacationStats() {
+        const currentDate = calendar.getDate();
+        const currentMonth = currentDate.getMonth();
+        const currentYear = currentDate.getFullYear();
+        
+        const events = calendar.getEvents().filter(event => {
+            const eventStart = event.start;
+            return eventStart.getMonth() === currentMonth && 
+                   eventStart.getFullYear() === currentYear;
+        });
+
+        const statsContainer = document.getElementById('vacation-stats-content');
+        let statsHTML = '';
+
+        // Group events by type and person
+        const vacationEvents = events.map(event => {
+            const summary = event.title;
+            let type, name, displayName;
+
+            if (summary.includes('Vacation')) {
+                type = 'vacation';
+                name = summary.split(' - ')[0];
+                displayName = 'Vacation';
+            } else if (summary.includes('Sick Day')) {
+                type = 'sick';
+                name = summary.split(' - ')[0];
+                displayName = 'Sick Day';
+            } else {
+                type = 'holiday';
+                const parts = summary.split(' - ');
+                displayName = parts[0];
+                name = parts[1];
+            }
+
+            return {
+                type,
+                name,
+                displayName,
+                start: event.start,
+                end: event.end
+            };
+        });
+
+        if (vacationEvents.length === 0) {
+            statsHTML = '<div class="vacation-item">No vacations or holidays this month</div>';
+        } else {
+            vacationEvents.forEach(event => {
+                const startDate = event.start.toLocaleDateString();
+                const endDate = new Date(event.end.getTime() - 24*60*60*1000).toLocaleDateString();
+                const dateDisplay = startDate === endDate ? startDate : `${startDate} - ${endDate}`;
+
+                statsHTML += `
+                    <div class="vacation-item">
+                        <div>
+                            <div class="vacation-name">${event.name}</div>
+                            <div class="vacation-dates">${dateDisplay}</div>
+                        </div>
+                        <span class="vacation-type ${event.type}">${event.displayName}</span>
+                    </div>
+                `;
+            });
+        }
+
+        statsContainer.innerHTML = statsHTML;
+    }
 
     // Fetch and parse ICS data
     async function fetchICSData(url) {
@@ -507,7 +633,12 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
 
+    calendar.setOption('datesSet', function(info) {
+        updateVacationStats();
+    });
+
     // Create filters and render calendar
     createTeamFilters();
     calendar.render();
+    updateVacationStats(); // Initial update
 });
