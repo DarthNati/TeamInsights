@@ -7,15 +7,28 @@ document.addEventListener('DOMContentLoaded', async function () {
     containerDiv.appendChild(calendarEl);
 
     // Team members configuration
+    const COLORS = {
+        GOLD: '#fc8626',
+        SKY_BLUE: '#004f9f',
+        DARK_RED: '#66023c'
+    };
+    
+    // Team members configuration
     const TEAM_MEMBERS = {
-        'Netanel Balas': { group: 'Tier 2 IL', color: '#FFD700' }, 
-        'Nadav Arnheim': { group: 'Tier 2 IL', color: '#FFD700' },
-        'Guy Kogan': { group: 'Tier 2 IL', color: '#FFD700' }, 
-        'Galit Bezinian Ezov': { group: 'Tier 2 IL', color: '#FFD700' },
-        'Abizar Fakruddin': { group: 'Tier 2 DUBAI', color: '#87CEEB' },
-        'Yasin Banu Shafi Mohamed': { group: 'Tier 2 DUBAI', color: '#87CEEB' },
-        'Peeyush Sharma': { group: 'Tier 2 DUBAI', color: '#87CEEB' },
-        'Erla Gudmundsdottir': { group: 'Support Europe', color: '#66023c' }
+        // Tier 2 IL
+        'Netanel Balas': { group: 'Tier 2 IL', color: COLORS.GOLD }, 
+        'Nadav Arnheim': { group: 'Tier 2 IL', color: COLORS.GOLD },
+        'Guy Kogan': { group: 'Tier 2 IL', color: COLORS.GOLD }, 
+        'Galit Bezinian Ezov': { group: 'Tier 2 IL', color: COLORS.GOLD },
+        // Tier 2 Dubai
+        'Abizar Fakruddin': { group: 'Tier 2 DUBAI', color: COLORS.SKY_BLUE },
+        'Yasin Banu Shafi Mohamed': { group: 'Tier 2 DUBAI', color: COLORS.SKY_BLUE },
+        'Peeyush Sharma': { group: 'Tier 2 DUBAI', color: COLORS.SKY_BLUE },
+        // Support EU
+        'Erla Gudmundsdottir': { group: 'Support Europe', color: COLORS.DARK_RED },
+        'Asdis Johannsdottir': { group: 'Support Europe', color: COLORS.DARK_RED },
+        'Stefan Orn Thorarinsson': { group: 'Support Europe', color: COLORS.DARK_RED },
+        'María Ýr Valsdóttir': { group: 'Support Europe', color: COLORS.DARK_RED }
     };
 
     // Create and inject CSS styles
