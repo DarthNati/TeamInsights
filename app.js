@@ -8,13 +8,16 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Team members configuration
     const TEAM_MEMBERS = {
-        'Netanel Balas': { group: 'Tier 2 IL', color: '#FFD700' }, 
-        'Nadav Arnheim': { group: 'Tier 2 IL', color: '#FFD700' },
-        'Guy Kogan': { group: 'Tier 2 IL', color: '#FFD700' }, 
-        'Galit Bezinian Ezov': { group: 'Tier 2 IL', color: '#FFD700' },
-        'Abizar Fakruddin': { group: 'Tier 2 DUBAI', color: '#87CEEB' },
-        'Yasin Banu Shafi Mohamed': { group: 'Tier 2 DUBAI', color: '#87CEEB' },
-        'Peeyush Sharma': { group: 'Tier 2 DUBAI', color: '#87CEEB' },
+         // Tier 2 IL
+        'Netanel Balas': { group: 'Tier 2 IL', color: '#E49B0F' }, 
+        'Nadav Arnheim': { group: 'Tier 2 IL', color: '#E49B0F' },
+        'Guy Kogan': { group: 'Tier 2 IL', color: '#E49B0F' }, 
+        'Galit Bezinian Ezov': { group: 'Tier 2 IL', color: '#E49B0F' },
+         // Tier 2 Dubai
+        'Abizar Fakruddin': { group: 'Tier 2 DUBAI', color: '#0047AB' },
+        'Yasin Banu Shafi Mohamed': { group: 'Tier 2 DUBAI', color: '#0047AB' },
+        'Peeyush Sharma': { group: 'Tier 2 DUBAI', color: '#0047AB' },
+        // Support EU
         'Erla Gudmundsdottir': { group: 'Support Europe', color: '#66023c' }
     };
 
