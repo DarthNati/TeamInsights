@@ -4,21 +4,55 @@ document.addEventListener('DOMContentLoaded', async function () {
     const containerDiv = document.createElement('div');
     containerDiv.className = 'calendar-container';
     calendarEl.parentNode.insertBefore(containerDiv, calendarEl);
-    containerDiv.appendChild(calendarEl);
+
+    // Create sidebars
+    const leftSidebar = document.createElement('div');
+    leftSidebar.className = 'sidebar-container left-sidebar';
+    
+    const calendarWrapper = document.createElement('div');
+    calendarWrapper.className = 'calendar-wrapper';
+    calendarWrapper.appendChild(calendarEl);
+    
+    const rightSidebar = document.createElement('div');
+    rightSidebar.className = 'sidebar-container right-sidebar';
+
+    // Add elements to container in correct order
+    containerDiv.appendChild(leftSidebar);
+    containerDiv.appendChild(calendarWrapper);
+    containerDiv.appendChild(rightSidebar);
+
+    // Define colors as constants
+    const COLORS = {
+        TIER_2_IL: '#E49B0F',
+        TIER_2_DUBAI: '#0047AB',
+        SUPPORT_UK: '#32a877',
+        SUPPORT_EU: '#0047AB'
+    };
 
     // Team members configuration
     const TEAM_MEMBERS = {
-         // Tier 2 IL
-        'Netanel Balas': { group: 'Tier 2 IL', color: '#E49B0F' }, 
-        'Nadav Arnheim': { group: 'Tier 2 IL', color: '#E49B0F' },
-        'Guy Kogan': { group: 'Tier 2 IL', color: '#E49B0F' }, 
-        'Galit Bezinian Ezov': { group: 'Tier 2 IL', color: '#E49B0F' },
-         // Tier 2 Dubai
-        'Abizar Fakruddin': { group: 'Tier 2 DUBAI', color: '#0047AB' },
-        'Yasin Banu Shafi Mohamed': { group: 'Tier 2 DUBAI', color: '#0047AB' },
-        'Peeyush Sharma': { group: 'Tier 2 DUBAI', color: '#0047AB' },
+        // Tier 2 IL
+        'Netanel Balas': { group: 'Tier 2 IL', color: COLORS.TIER_2_IL }, 
+        'Nadav Arnheim': { group: 'Tier 2 IL', color: COLORS.TIER_2_IL },
+        'Guy Kogan': { group: 'Tier 2 IL', color: COLORS.TIER_2_IL }, 
+        'Galit Bezinian Ezov': { group: 'Tier 2 IL', color: COLORS.TIER_2_IL },
+        // Tier 2 Dubai
+        'Abizar Fakruddin': { group: 'Tier 2 DUBAI', color: COLORS.TIER_2_DUBAI },
+        'Yasin Banu Shafi Mohamed': { group: 'Tier 2 DUBAI', color: COLORS.TIER_2_DUBAI },
+        'Peeyush Sharma': { group: 'Tier 2 DUBAI', color: COLORS.TIER_2_DUBAI },
         // Support EU
-        'Erla Gudmundsdottir': { group: 'Support Europe', color: '#66023c' }
+        'Erla Gudmundsdottir': { group: 'Support Europe', color: COLORS.SUPPORT_EU },
+        'Stefan Orn Thorarinsson': { group: 'Support Europe', color: COLORS.SUPPORT_EU },
+        'María Ýr Valsdóttir': { group: 'Support Europe', color: COLORS.SUPPORT_EU },
+        'Asdis Johannsdottir': { group: 'Support Europe', color: COLORS.SUPPORT_EU },
+        'Gestur Helgason': { group: 'Support Europe', color: COLORS.SUPPORT_EU },
+        // Support UK
+        'Alexander Perry': { group: 'Support UK', color: COLORS.SUPPORT_UK },
+        'Connor Holland': { group: 'Support UK', color: COLORS.SUPPORT_UK },
+        'Bethany Wootton': { group: 'Support UK', color: COLORS.SUPPORT_UK },
+        'Yuen Fai Wan': { group: 'Support UK', color: COLORS.SUPPORT_UK },
+        'Sam Holloway': { group: 'Support UK', color: COLORS.SUPPORT_UK }
+
     };
 
     // Create and inject CSS styles
@@ -26,34 +60,55 @@ document.addEventListener('DOMContentLoaded', async function () {
     styleSheet.textContent = `
     .calendar-container {
         display: flex;
+        justify-content: space-between;
         gap: 20px;
-        max-width: 1400px;
+        max-width: 1600px;
         margin: 0 auto;
-        padding: 20px 40px;
+        padding: 20px;
     }
 
-    .filter-sidebar {
+    .calendar-wrapper {
+        flex: 1;
+        min-width: 0;
+        margin: 0 20px;
+    }
+
+    .sidebar-container {
+        width: 300px;
+        flex-shrink: 0;
+    }
+
+    .left-sidebar,
+    .right-sidebar {
+        position: sticky;
+        top: 20px;
+    }
+
+    #calendar {
+        width: 100%;
+        height: auto;
+        min-width: 0;
+    }
+
+.filter-sidebar {
+    background: #2D3338;
+    color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 260px;  /* Changed from 250px */
+    height: fit-content;
+    margin-bottom: 20px;
+}
+
+    .vacation-stats {
         background: #2D3338;
         color: #fff;
         padding: 20px;
         border-radius: 8px;
-        width: 250px;
         height: fit-content;
-        flex-shrink: 0;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        position: sticky;
-        top: 20px;
-        margin-right: 20px;
     }
 
-    #calendar {
-        flex-grow: 1;
-        min-width: 0;
-        max-width: 1000px;
-        margin: 0 auto;
-    }
-
-    .filter-sidebar h2 {
+    .filter-sidebar h2, .vacation-stats h2 {
         margin: 0 0 15px 0;
         font-size: 1.5em;
         color: #fff;
@@ -201,21 +256,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         background: rgba(255, 255, 255, 0.2);
     }
 
-    .vacation-stats {
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 20px;
-    }
-
-    .vacation-stats h3 {
-        margin: 0 0 10px 0;
-        font-size: 1.1em;
-        color: #fff;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        padding-bottom: 8px;
-    }
-
     .vacation-stats-content {
         font-size: 0.9em;
     }
@@ -326,108 +366,107 @@ document.addEventListener('DOMContentLoaded', async function () {
     document.head.appendChild(styleSheet);
 
     // Create team member filter sidebar
-    function createTeamFilters() {
-        const filterContainer = document.createElement('div');
-        filterContainer.className = 'filter-sidebar';
+// Create team member filter sidebar
+function createTeamFilters() {
+    const filterContainer = document.createElement('div');
+    filterContainer.className = 'filter-sidebar';
 
-        let filterHTML = `
-            <h2>Team Filters</h2>
-            <div class="vacation-stats">
-                <h3>Vacation This Month</h3>
-                <div id="vacation-stats-content" class="vacation-stats-content">
-                    Loading...
-                </div>
-            </div>
-        `;
+    let filterHTML = '<h2>Team Filters</h2>';
 
-        // Group members by team
-        const groupedMembers = {};
-        Object.entries(TEAM_MEMBERS).forEach(([name, details]) => {
-            if (!groupedMembers[details.group]) {
-                groupedMembers[details.group] = [];
-            }
-            groupedMembers[details.group].push({name, color: details.color});
-        });
+    // Group members by team
+    const groupedMembers = {};
+    Object.entries(TEAM_MEMBERS).forEach(([name, details]) => {
+        if (!groupedMembers[details.group]) {
+            groupedMembers[details.group] = [];
+        }
+        groupedMembers[details.group].push({name, color: details.color});
+    });
 
-        // Create group sections
-        Object.entries(groupedMembers).forEach(([group, members]) => {
-            filterHTML += `
-                <div class="group-section">
-                    <div class="group-header">
-                        <div class="group-header-content" onclick="toggleGroup('${group}')">
-                            <span>${group}</span>
-                            <span class="arrow">›</span>
-                        </div>
-                        <div class="group-toggle">
-                            <input type="checkbox" 
-                                id="group-toggle-${group.replace(/\s+/g, '-')}" 
-                                class="group-checkbox member-checkbox" 
-                                checked>
-                        </div>
-                    </div>
-                    <div class="group-content" id="group-${group.replace(/\s+/g, '-')}">
-                        ${members.map(({name, color}) => `
-                            <div class="member-item">
-                                <input type="checkbox" 
-                                    id="filter-${name.replace(/\s+/g, '-')}" 
-                                    class="member-checkbox" 
-                                    data-group="${group}"
-                                    checked>
-                                <span class="color-indicator" style="background-color: ${color}"></span>
-                                <label class="member-label" for="filter-${name.replace(/\s+/g, '-')}">
-                                    ${name}
-                                </label>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        });
-
+    // Create group sections
+    Object.entries(groupedMembers).forEach(([group, members]) => {
         filterHTML += `
-            <div class="actions-bar">
-                <button class="action-button" onclick="selectAll()">Select All</button>
-                <button class="action-button" onclick="deselectAll()">Deselect All</button>
+            <div class="group-section">
+                <div class="group-header">
+                    <div class="group-header-content" onclick="toggleGroup('${group}')">
+                        <span>${group}</span>
+                        <span class="arrow">›</span>
+                    </div>
+                    <div class="group-toggle">
+                        <input type="checkbox" 
+                            id="group-toggle-${group.replace(/\s+/g, '-')}" 
+                            class="group-checkbox member-checkbox" 
+                            checked>
+                    </div>
+                </div>
+                <div class="group-content" id="group-${group.replace(/\s+/g, '-')}">
+                    ${members.map(({name, color}) => `
+                        <div class="member-item">
+                            <input type="checkbox" 
+                                id="filter-${name.replace(/\s+/g, '-')}" 
+                                class="member-checkbox" 
+                                data-group="${group}"
+                                checked>
+                            <span class="color-indicator" style="background-color: ${color}"></span>
+                            <label class="member-label" for="filter-${name.replace(/\s+/g, '-')}">
+                                ${name}
+                            </label>
+                        </div>
+                    `).join('')}
+                </div>
             </div>
         `;
+    });
 
-        filterContainer.innerHTML = filterHTML;
-        containerDiv.insertBefore(filterContainer, calendarEl);
+    filterHTML += `
+        <div class="actions-bar">
+            <button class="action-button" onclick="selectAll()">Select All</button>
+            <button class="action-button" onclick="deselectAll()">Deselect All</button>
+        </div>
+    `;
 
-        // Add event listeners for group toggles
-        document.querySelectorAll('.group-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', (e) => {
-                const group = e.target.id.replace('group-toggle-', '').replace(/-/g, ' ');
-                const memberCheckboxes = document.querySelectorAll(`input[data-group="${group}"]`);
-                memberCheckboxes.forEach(memberCheckbox => {
-                    memberCheckbox.checked = e.target.checked;
-                });
-                filterEvents();
+    filterContainer.innerHTML = filterHTML;
+    leftSidebar.appendChild(filterContainer);
+
+    // Vacation stats setup
+    const vacationStatsContainer = document.createElement('div');
+    vacationStatsContainer.className = 'vacation-stats';
+    vacationStatsContainer.innerHTML = `
+        <h2>Monthly Overview</h2>
+        <div id="vacation-stats-content" class="vacation-stats-content">
+            Loading...
+        </div>
+    `;
+    rightSidebar.appendChild(vacationStatsContainer);
+
+    // Add event listeners for group toggles
+    document.querySelectorAll('.group-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => {
+            const group = e.target.id.replace('group-toggle-', '').replace(/-/g, ' ');
+            const memberCheckboxes = document.querySelectorAll(`input[data-group="${group}"]`);
+            memberCheckboxes.forEach(memberCheckbox => {
+                memberCheckbox.checked = e.target.checked;
             });
+            filterEvents();
         });
+    });
 
-        // Update member checkbox listeners to handle group toggle states
-        document.querySelectorAll('.member-checkbox:not(.group-checkbox)').forEach(checkbox => {
-            checkbox.addEventListener('change', (e) => {
-                const group = e.target.dataset.group;
-                const groupCheckbox = document.getElementById(`group-toggle-${group.replace(/\s+/g, '-')}`);
-                const groupMembers = document.querySelectorAll(`input[data-group="${group}"]:not(.group-checkbox)`);
-                const allChecked = Array.from(groupMembers).every(cb => cb.checked);
-                const anyChecked = Array.from(groupMembers).some(cb => cb.checked);
-                
-                groupCheckbox.checked = allChecked;
-                groupCheckbox.indeterminate = anyChecked && !allChecked;
-                
-                filterEvents();
-            });
+    // Update member checkbox listeners to handle group toggle states
+    document.querySelectorAll('.member-checkbox:not(.group-checkbox)').forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => {
+            const group = e.target.dataset.group;
+            const groupCheckbox = document.getElementById(`group-toggle-${group.replace(/\s+/g, '-')}`);
+            const groupMembers = document.querySelectorAll(`input[data-group="${group}"]:not(.group-checkbox)`);
+            const allChecked = Array.from(groupMembers).every(cb => cb.checked);
+            const anyChecked = Array.from(groupMembers).some(cb => cb.checked);
+            
+            groupCheckbox.checked = allChecked;
+            groupCheckbox.indeterminate = anyChecked && !allChecked;
+            
+            filterEvents();
         });
+    });
+}
 
-        // Expand all groups initially
-        document.querySelectorAll('.group-content').forEach(content => {
-            content.classList.add('expanded');
-            content.previousElementSibling.classList.add('expanded');
-        });
-    }
 
     // Add global functions for the onclick handlers
     window.toggleGroup = function(group) {
