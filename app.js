@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         TIER_2_IL: '#E49B0F',
         TIER_2_DUBAI: '#0047AB',
         SUPPORT_UK: '#32a877',
-        SUPPORT_EU: '#0047AB'
+        SUPPORT_EU: '#9832a8'
     };
 
     // Team members configuration
@@ -46,6 +46,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         'María Ýr Valsdóttir': { group: 'Support Europe', color: COLORS.SUPPORT_EU },
         'Asdis Johannsdottir': { group: 'Support Europe', color: COLORS.SUPPORT_EU },
         'Gestur Helgason': { group: 'Support Europe', color: COLORS.SUPPORT_EU },
+        'Stefán Hermundsson': { group: 'Support Europe', color: COLORS.SUPPORT_EU },
+        'Arnar Freyr Sigurjonsson': { group: 'Support Europe', color: COLORS.SUPPORT_EU },
+        'Bjorgvin Mar Gudjonsson': { group: 'Support Europe', color: COLORS.SUPPORT_EU },
+        'Hrafnkell Sigurðarson': { group: 'Support Europe', color: COLORS.SUPPORT_EU },
+        'Adalsteinn Sigurgeirsson': { group: 'Support Europe', color: COLORS.SUPPORT_EU },
+        'Muggur Ólafsson': { group: 'Support Europe', color: COLORS.SUPPORT_EU },
+        'Bjartur Vidarsson': { group: 'Support Europe', color: COLORS.SUPPORT_EU },
         // Support UK
         'Alexander Perry': { group: 'Support UK', color: COLORS.SUPPORT_UK },
         'Connor Holland': { group: 'Support UK', color: COLORS.SUPPORT_UK },
