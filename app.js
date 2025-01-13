@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         'Nadav Arnheim': { group: 'Tier 2 IL', color: COLORS.TIER_2_IL },
         'Guy Kogan': { group: 'Tier 2 IL', color: COLORS.TIER_2_IL }, 
         'Galit Bezinian Ezov': { group: 'Tier 2 IL', color: COLORS.TIER_2_IL },
+        'Hodaya Menahem': { group: 'Tier 2 IL', color: COLORS.TIER_2_IL },
         // Tier 2 Dubai
         'Abizar Fakruddin': { group: 'Tier 2 DUBAI', color: COLORS.TIER_2_DUBAI },
         'Yasin Banu Shafi Mohamed': { group: 'Tier 2 DUBAI', color: COLORS.TIER_2_DUBAI },
