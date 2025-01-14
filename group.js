@@ -1,14 +1,5 @@
-const COLORS = {
-  "Tier 2 IL": "#E49B0F",
-  "Tier 2 Dubai": "#0047AB",
-  "Support UK": "#32a877",
-  "Support Europe": "#9832a8"
-};
+const COLORS = {};
 const TEAM_MEMBERS = {
-  "Netanel Balas": {
-    "group": "Tier 2 IL",
-    "color": "#E49B0F"
-  },
   "Nadav Arnheim": {
     "group": "Tier 2 IL",
     "color": "#E49B0F"
