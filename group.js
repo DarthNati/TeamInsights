@@ -2,8 +2,7 @@ const COLORS = {
     TIER_2_IL: '#E49B0F',
     TIER_2_DUBAI: '#0047AB',
     SUPPORT_UK: '#32a877',
-    SUPPORT_EU: '#9832a8',
-    PARTNER_SUPPORT: '#6d6e70'
+    SUPPORT_EU: '#9832a8'
 };
 
 // Team members configuration
@@ -104,12 +103,16 @@ const TEAM_MEMBERS = {
         group: 'Support UK',
         color: '#32a877'
     },
-        'Eden Elimelech': {
+    'Eden Elimelech': {
         group: 'Partner Support',
         color: '#6d6e70'
     },
     'Netanel Balas': {
         group: 'Tier 2 IL',
         color: '#E49B0F'
+    },
+    'Rinat Weissberger': {
+        group: 'Partner Support',
+        color: '#6d6e70'
     }
 };
