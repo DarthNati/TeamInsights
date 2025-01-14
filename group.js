@@ -108,6 +108,10 @@ const TEAM_MEMBERS = {
   "test": {
     "group": "TIER_2_IL",
     "color": "#E49B0F"
+  },
+  "aa": {
+    "group": "TIER_2_IL",
+    "color": "#E49B0F"
   }
 };
 export { COLORS, TEAM_MEMBERS };
