@@ -104,6 +104,10 @@ const TEAM_MEMBERS = {
   "Sam Holloway": {
     "group": "Support UK",
     "color": "#32a877"
+  },
+  "test": {
+    "group": "TIER_2_IL",
+    "color": "#E49B0F"
   }
 };
 export { COLORS, TEAM_MEMBERS };
