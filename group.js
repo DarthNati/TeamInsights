@@ -114,5 +114,9 @@ const TEAM_MEMBERS = {
     'Rinat Weissberger': {
         group: 'Partner Support',
         color: '#6d6e70'
+    },
+    'Helda Pritchard': {
+        group: 'Partner Support',
+        color: '#6d6e70'
     }
 };
