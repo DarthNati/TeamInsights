@@ -2,8 +2,7 @@ const COLORS = {
   "Tier 2 IL": "#E49B0F",
   "Tier 2 DUBAI": "#0047AB",
   "Support Europe": "#9832a8",
-  "Support UK": "#32a877",
-  "new test": "#df9595"
+  "Support UK": "#32a877"
 };
 const TEAM_MEMBERS = {
   "Nadav Arnheim": {
