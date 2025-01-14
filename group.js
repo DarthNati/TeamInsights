@@ -1,8 +1,8 @@
 const COLORS = {
-  "TIER_2_IL": "#E49B0F",
-  "TIER_2_DUBAI": "#0047AB",
-  "SUPPORT_UK": "#32a877",
-  "SUPPORT_EU": "#9832a8"
+  "Tier 2 IL": "#E49B0F",
+  "Tier 2 Dubai": "#0047AB",
+  "Support UK": "#32a877",
+  "Support Europe": "#9832a8"
 };
 const TEAM_MEMBERS = {
   "Netanel Balas": {
@@ -104,10 +104,6 @@ const TEAM_MEMBERS = {
   "Sam Holloway": {
     "group": "Support UK",
     "color": "#32a877"
-  },
-  "tt": {
-    "group": "TIER_2_IL",
-    "color": "#E49B0F"
   }
 };
 export { COLORS, TEAM_MEMBERS };
