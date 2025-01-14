@@ -5,10 +5,6 @@ const COLORS = {
   "Support UK": "#32a877"
 };
 const TEAM_MEMBERS = {
-  "Netanel Balas": {
-    "group": "Tier 2 IL",
-    "color": "#E49B0F"
-  },
   "Nadav Arnheim": {
     "group": "Tier 2 IL",
     "color": "#E49B0F"
