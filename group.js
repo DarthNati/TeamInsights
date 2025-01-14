@@ -102,4 +102,3 @@ const TEAM_MEMBERS = {
     "color": "#32a877"
   }
 };
-export { COLORS, TEAM_MEMBERS };
