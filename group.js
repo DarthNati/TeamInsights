@@ -122,5 +122,9 @@ const TEAM_MEMBERS = {
     'Helda Pritchard': {
         group: 'Partner Support',
         color: '#6d6e70'
+    },
+        'Henrietta Melsen': {
+        group: 'Partner Support',
+        color: '#6d6e70'
     }
 };
