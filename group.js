@@ -11,6 +11,10 @@ const TEAM_MEMBERS = {
         group: 'Tier 2 IL',
         color: '#E49B0F'
     },
+        'Sagi Bar-Oz': {
+        group: 'Tier 2 IL',
+        color: '#E49B0F'
+    },
         'Omri Yehudai': {
         group: 'Tier 2 IL',
         color: '#E49B0F'
